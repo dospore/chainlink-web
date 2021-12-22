@@ -26,9 +26,82 @@ const Controls = styled('div')`
   display: flex;
 `;
 
+const NodeFocus = styled('div')`
+  position: absolute;
+  color: white;
+  right: 2rem;
+  bottom: 1rem;
+  &:hover {
+      cursor: pointer;
+  }
+`;
+
+const Util = styled('div')`
+    backround: white;
+    font-size: 12px
+    margin: 1rem;
+    &:hover {
+        cursor: pointer;
+    }
+`;
+
+
 export default ((() => {
     const fgRef = useRef();
     const [state, dispatch] = useReducer(reducer, initialGraphState);
+
+
+    const focusNode = () => {
+        const node = state.selectedNode;
+        if (!node) return;
+        if (node.type === NodeType.Oracle) {
+            const feeds = state.oracleMap[node.address]?.feeds ?? [];
+            dispatch({ type: 'selectAll', nodeType: NodeType.Contract, options: feeds.map((feed) => feed.contract_address)})
+            dispatch({ type: 'selectAll', nodeType: NodeType.Oracle, options: [node.address] })
+        } else if (node.type === NodeType.Contract) {
+            const oracles = state.contractMap[node.address].oracles
+            dispatch({ type: 'selectAll', nodeType: NodeType.Oracle, options: oracles.map((oracle) => oracle.oracle_address)})
+            dispatch({ type: 'selectAll', nodeType: NodeType.Contract, options: [node.address] })
+        }
+    }
+
+    const addNearbyOracles = () => {
+        const node = state.selectedNode;
+        if (!node || node.type !== NodeType.Oracle) return;
+
+        const feeds = state.oracleMap[node.address]?.feeds ?? [];
+        const nearbyOracles: string[] = [];
+        feeds.forEach((feed) => {
+            state.contractMap[feed.contract_address]?.oracles?.forEach((oracle) => {
+                nearbyOracles.push(oracle.oracle_address);
+            })
+        })
+        dispatch({ type: 'selectAll', nodeType: NodeType.Oracle, options: nearbyOracles })
+        dispatch({ type: 'selectAll', nodeType: NodeType.Contract, options: feeds.map((feed) => feed.contract_address)})
+    }
+
+
+    const selectedNodeUtils = () => {
+        switch (state.selectedNode?.type) {
+        case NodeType.Contract:
+            return (
+                <>
+                    <Util onClick={() => focusNode()}>Focus on Node</Util>
+                </>
+            )
+        case NodeType.Oracle:
+            return (
+                <>
+                    <Util onClick={() => focusNode()}>Focus on Node</Util>
+                    <Util onClick={() => addNearbyOracles()}>
+                        Show oracle neighbours
+                    </Util>
+                </>
+            )
+        default:
+            return null
+        }
+    }
 
     useEffect(() => {
         const getOracles = async (network: Network) => {
@@ -155,6 +228,15 @@ export default ((() => {
                 />
                 <FilterIcon onClick={() => dispatch({ type: 'setControlsModal', open: true })} />
             </Controls>
+            <NodeFocus>
+                {selectedNodeUtils()}
+                <Util onClick={() => {
+                    dispatch({ type: 'selectAll', nodeType: NodeType.Oracle, options: Object.keys(state.oracleMap) })
+                    dispatch({ type: 'selectAll', nodeType: NodeType.Contract, options: Object.keys(state.contractMap) })
+                }}>
+                    Reset
+                </Util>
+            </NodeFocus>
             <ControlModal
                 open={state.controlsModalOpen}
                 handleClose={() => dispatch({ type: 'setControlsModal', open: false })}
