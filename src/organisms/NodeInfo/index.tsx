@@ -28,12 +28,12 @@ const typeMap: Record<NodeType, {
     }
 }
 
-export default ((({ selectedNode, contractMap, oracleMap }) => {
+export default ((({ selectedNode, contractMap, oracleMap, network }) => {
     if (!selectedNode) return null;
     return (
         <NodeInfo>
             <Typography variant="h3">{selectedNode.name}</Typography>
-            <Typography>Contract: <Link color="inherit" target="_blank" rel="noreferrer noopener" href={`${BASE_URL}/${typeMap[selectedNode.type].urlLink}/${selectedNode.address}`}>{selectedNode.address}</Link></Typography>
+            <Typography>Contract: <Link color="inherit" target="_blank" rel="noreferrer noopener" href={`${BASE_URL}/${typeMap[selectedNode.type].urlLink}/${selectedNode.address}?network=${network}`}>{selectedNode.address}</Link></Typography>
             <Typography>Type: {typeMap[selectedNode.type].typeDesc}</Typography>
             {
                 selectedNode?.type === NodeType.Contract
@@ -51,5 +51,6 @@ export default ((({ selectedNode, contractMap, oracleMap }) => {
 })) as React.FC<{
     selectedNode: GraphState['selectedNode'],
     contractMap: GraphState['contractMap'],
-    oracleMap: GraphState['oracleMap']
+    oracleMap: GraphState['oracleMap'],
+    network: GraphState['network']
 }>

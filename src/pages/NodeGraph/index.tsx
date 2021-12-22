@@ -217,6 +217,7 @@ export default ((() => {
                 selectedNode={state.selectedNode}
                 oracleMap={state.oracleMap}
                 contractMap={state.contractMap}
+                network={state.network}
             />
             <Controls>
                 <NetworkMenu 
