@@ -119,6 +119,11 @@ export default ((() => {
 
     return (
         <>
+            <style>{`
+                .scene-tooltip {
+                    background: rgba(0, 1, 1, 0.6);
+                }
+            `}</style>
             <ForceGraph3D
                 ref={fgRef}
                 backgroundColor="#010100"
