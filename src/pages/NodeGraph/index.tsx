@@ -121,6 +121,7 @@ export default ((() => {
         <>
             <ForceGraph3D
                 ref={fgRef}
+                backgroundColor="#010100"
                 graphData={{
                     links: filteredLinks,
                     nodes: filteredNodes

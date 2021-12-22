@@ -189,7 +189,7 @@ export const reducer: (state: GraphState, action: GraphAction) => GraphState = (
         const contracts = Object.keys(action.contractMap).map((contract) => ({
             id: contract,
             name: action.contractMap[contract].name,
-            color: '#151414'
+            color: '#272626'
         }));
         const oracles = Object.values(action.oracleMap).map((oracle) => ({
             id: oracle.address,

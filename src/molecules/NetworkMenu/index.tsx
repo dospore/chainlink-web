@@ -7,7 +7,7 @@ import { Network } from '../../pages/NodeGraph/state';
 
 const networkNames: Record<Network, string> = {
     [Network.BSC]: 'Binance',
-    [Network.Arbitrum]: 'Arbitrum',
+    // [Network.Arbitrum]: 'Arbitrum',
     [Network.Mainnet]: 'Eth Mainnet',
     [Network.Polygon]: 'Polygon'
 }
