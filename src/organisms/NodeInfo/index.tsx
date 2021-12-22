@@ -41,7 +41,7 @@ export default ((({ selectedNode, contractMap, oracleMap }) => {
                         <Typography>Number of oracles: {contractMap[selectedNode.address].oracles.length}</Typography>
                     </>
                     : <>
-                        <Typography>Number of feeds (contracts): {oracleMap[selectedNode.address].feeds.length}</Typography>
+                        <Typography>Number of served feeds: {oracleMap[selectedNode.address].feeds.length}</Typography>
                     </>
 
             }

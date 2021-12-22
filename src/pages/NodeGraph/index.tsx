@@ -11,6 +11,9 @@ import {
     initialGraphState, reducer, OracleMap, ContractMap, NodeType, Network
 } from './state';
 
+
+// import { save as allFeeds } from './save'
+
 import ControlModal from '../../organisms/ControlModal';
 import NodeInfo from '../../organisms/NodeInfo';
 import FilterIcon from '../../atoms/FilterIcon';
@@ -40,6 +43,7 @@ export default ((() => {
             } else {
                 const oracles = await fetchOracles(network);
 
+                // can comment this out and used allFeeds from ./save for testing
                 const allFeeds = await Promise.all(oracles.map((oracle) => {
                     return(fetchOracleFeeds(state.network, oracle.oracle_address))
                 }))

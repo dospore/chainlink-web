@@ -17,7 +17,7 @@ export enum Network {
   Mainnet = 'Eth_Mainnet',
   BSC = 'BSC',
   Polygon = 'Polygon',
-  Arbitrum = 'Arbitrum'
+  // Arbitrum = 'Arbitrum'
 }
 
 // NodeType
